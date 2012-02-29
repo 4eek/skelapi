@@ -1,0 +1,5 @@
+## TODO
+
+1. The rate-limit is api key based. This opens us up to a DOS attack by changing the api key with every request. This could be improved by rate limiting based on ip address.
+2. Use Thor to setup MongoDB stuff.
+

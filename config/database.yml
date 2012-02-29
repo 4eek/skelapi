@@ -1,0 +1,31 @@
+defaults: &defaults
+  database: api_development
+  host: localhost
+  port: 27017 
+
+development:
+  <<: *defaults
+  database: api_development
+  host: localhost
+  port: 27017 
+
+test:
+  <<: *defaults
+  database: api_test
+  host: localhost
+  port: 27017 
+
+# Set these environment variables on the staging and production servers:
+# ...
+
+staging:
+  <<: *defaults
+  database: api_staging
+  host: localhost
+  port: 27017 
+
+production:
+  <<: *defaults
+  database: api_production
+  host: localhost
+  port: 27017 
