@@ -78,6 +78,8 @@ GEM
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     log4r (1.1.10)
+    mongo (1.6.0)
+      bson (= 1.6.0)
     multi_json (1.1.0)
     multi_xml (0.4.1)
     rack (1.4.0)
@@ -121,6 +123,7 @@ DEPENDENCIES
   em-mongo!
   goliath!
   httparty
+  mongo
   rspec
   ruby-debug19
   thor

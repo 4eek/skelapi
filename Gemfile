@@ -13,4 +13,5 @@ group :development, :test do
   gem 'rspec'
   gem 'httparty'
   gem 'childprocess'
+  gem 'mongo'
 end
