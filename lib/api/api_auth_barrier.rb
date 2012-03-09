@@ -9,26 +9,26 @@
 #
 # The magic of BarrierAroundware:
 #
-# 1) In pre_process (before the request):
+# 1. In pre_process (before the request):
 #    * validate an apikey was given; if not, raise (returning directly)
 #    * launch requests for the account and rate limit usage
 #
-# 2) On a POST or other non-GET non-HEAD, we issue `perform`, which barriers
+# 2. On a POST or other non-GET non-HEAD, we issue `perform`, which barriers
 #    (allowing other requests to proceed) until the two pending requests
 #    complete. It then checks the account exists and is valid, and that the rate
 #    limit is OK
 #
-# 3) If the auth check fails, we raise an error (later caught by a safely{}
+# 3. If the auth check fails, we raise an error (later caught by a safely{}
 #    block and turned into the right 4xx HTTP response.
 #
-# 4) If the auth check succeeds, or the request is a GET or HEAD, we return
+# 4. If the auth check succeeds, or the request is a GET or HEAD, we return
 #    Goliath::Connection::AsyncResponse, and BarrierAroundwareFactory passes the
 #    request down the middleware chain
 #
-# 5) post_process resumes only when both proxied request & auth info are complete
+# 5. post_process resumes only when both proxied request & auth info are complete
 #    (it already has of course in the non-lazy scenario)
 #
-# 6) If we were lazy, the post_process method now checks authorization
+# 6. If we were lazy, the post_process method now checks authorization
 #
 module Api
   class ApiAuthBarrier

@@ -14,4 +14,6 @@ group :development, :test do
   gem 'httparty'
   gem 'childprocess'
   gem 'mongo'
+  gem 'yard'
+  gem 'redcarpet'
 end
