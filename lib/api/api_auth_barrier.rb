@@ -128,7 +128,7 @@ module Api
     end
 
     def check_apikey!
-      unless account_info && (account_info['valid'] == true)
+      unless account_info && (account_info['active'] == true)
         raise InvalidApikeyError
       end
     end

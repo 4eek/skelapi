@@ -18,17 +18,17 @@ class Database < Thor
 
       # This user's calls should all go through
       conn.collection(:account_info).save({
-        :_id => 'i_am_awesome', 'valid' => true,  'max_call_rate' => 1_000_000 
+        :_id => 'i_am_awesome', 'active' => true,  'max_call_rate' => 1_000_000 
       })
 
       # this user's account is disabled
       conn.collection(:account_info).save({
-        :_id => 'i_am_lame',    'valid' => false, 'max_call_rate' => 1_000 
+        :_id => 'i_am_lame',    'active' => false, 'max_call_rate' => 1_000 
       })
 
       # this user has not been seen, but will very quickly hit their limit
       conn.collection(:account_info).save({
-        :_id => 'i_am_limited', 'valid' => true, 'max_call_rate' =>     10 
+        :_id => 'i_am_limited', 'active' => true, 'max_call_rate' =>     10 
       })
       conn.collection(:usage_info).save({
         :_id => "i_am_limited-#{timebin}", 'calls' =>  0 
@@ -36,7 +36,7 @@ class Database < Thor
 
       # fakes a user with a bunch of calls already made this hour -- two more = no yuo
       conn.collection(:account_info).save({
-        :_id => 'i_am_busy',    'valid' => true, 'max_call_rate' =>  1_000 
+        :_id => 'i_am_busy',    'active' => true, 'max_call_rate' =>  1_000 
       })
       conn.collection(:usage_info).save({
         :_id => "i_am_busy-#{timebin}", 'calls' =>  999 
