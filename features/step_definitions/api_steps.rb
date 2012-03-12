@@ -1,14 +1,15 @@
 class APIClient 
   include HTTParty 
+  base_uri 'http://localhost:9999'
   headers 'Content-Type' => 'application/json'
 end
 
 When /^the client requests GET (.*)$/ do |path|
-  @last_response = APIClient.get('http://localhost:9999' + path)
+  @last_response = APIClient.get(path)
 end
 
 When /^the client requests POST (.*)$/ do |path|
-  @last_response = APIClient.post('http://localhost:9999' + path, :query => {:_apikey => @api_key})
+  @last_response = APIClient.post(path, :query => @params)
 end
 
 Then /^the reponse should be OK$/ do
@@ -37,4 +38,10 @@ end
 
 Given /^a valid API key$/ do
   @api_key = "i_am_awesome"
+end
+
+Given /^the following POST params$/ do |table|
+  table.hashes.each do |params|
+    @params = params
+  end
 end

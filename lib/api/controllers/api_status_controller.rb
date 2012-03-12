@@ -9,7 +9,7 @@ module Api
     include ApiHelper
 
     def response(env)
-      ApiStatus.new(env, params).get
+      ApiStatus.new(env, params).method_router
     end
   end
 end
