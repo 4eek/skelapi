@@ -43,6 +43,7 @@ module Api
     class MissingApikeyError     < BadRequestError   ; end
     class RateLimitExceededError < ForbiddenError    ; end
     class InvalidApikeyError     < UnauthorizedError ; end
+    class InvalidIpError         < UnauthorizedError ; end
 
     def initialize(env)
       super(env)
@@ -118,6 +119,7 @@ module Api
 
     def check_authorization!
       check_apikey!
+      check_ip!
       check_rate_limit!
     end
 
@@ -130,6 +132,15 @@ module Api
     def check_apikey!
       unless account_info && (account_info['active'] == true)
         raise InvalidApikeyError
+      end
+    end
+
+    def check_ip!
+      unless account_info && account_info['ips']
+        raise InvalidIpError, "Invalid remote address configuration."
+      end
+      unless account_info && (account_info['ips'].include?(ip) || account_info['ips'].include?('0.0.0.0'))
+        raise InvalidIpError, "Invalid remote address."
       end
     end
 
@@ -164,6 +175,14 @@ module Api
 
     def usage_id
       "#{apikey}-#{timebin}"
+    end
+
+    def ip
+      if addr = env['HTTP_X_FORWARDED_FOR']
+        (addr.split(',').grep(/\d\./).first || env['REMOTE_ADDR']).to_s.strip
+      else
+        env['REMOTE_ADDR']
+      end
     end
 
     def timebin
