@@ -15,11 +15,8 @@ module Api
 
     def response(env)
       start_time = Time.now.to_f
-
       resp = ApiStatus.new(env, params).method_router
-
       process_time = Time.now.to_f - start_time
-
       record(process_time, resp, env)
       resp
     end

@@ -110,10 +110,10 @@ module Api
       end
     end
 
-    def accept_response(handle, *args)
-      env.trace("received_#{handle}")
-      super(handle, *args)
-    end
+    # def accept_response(handle, *args)
+    #   env.trace("received_#{handle}")
+    #   super(handle, *args)
+    # end
 
     # ===========================================================================
 

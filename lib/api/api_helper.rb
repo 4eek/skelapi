@@ -35,7 +35,7 @@ module Api
       end
 
       def record(process_time, resp, env)
-        env.trace('http_log_record')
+        env.trace('record_beg')
 
         EM.next_tick do
           doc = {
@@ -63,6 +63,7 @@ module Api
 
           env.db.collection(:http_logs).insert(doc)
         end
+        env.trace('record_end')
       end
 
     end

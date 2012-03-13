@@ -14,7 +14,10 @@ module Api
     end
 
     def environment_method(params)
+      env.trace('method_beg')
+      EM::Synchrony.sleep(5) # pretent it's a lot of work
       response = {:env => Goliath.env, :method => params['method']}
+      env.trace('method_end')
       [200, {}, response]
     end
 
