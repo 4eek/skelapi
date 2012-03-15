@@ -9,8 +9,6 @@ require 'yajl/json_gem'
 require 'api/version'
 require 'api/api_helper'
 
-require 'api/api_status'
-
 module Api
   extend self
 
@@ -35,6 +33,9 @@ Api.lib_path   = Api.root_path.join('lib/api')
 
 # Load AuthBarrier
 require 'api/api_auth_barrier'
+
+# Load models
+Dir[Api.lib_path.join('models').to_s+'/*.rb'].each {|f| require f }
 
 # Load controllers
 Dir[Api.lib_path.join('controllers').to_s+'/*.rb'].each {|f| require f }
