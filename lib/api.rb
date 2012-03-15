@@ -38,7 +38,7 @@ require 'api/api_auth_barrier'
 Dir[Api.lib_path.join('models').to_s+'/*.rb'].each {|f| require f }
 
 # Load controllers
-Dir[Api.lib_path.join('controllers').to_s+'/*.rb'].each {|f| require f }
+Dir[Api.lib_path.join('controllers/**').to_s+'/*.rb'].each {|f| require f }
 
 # Load Router
 require 'api/router'
