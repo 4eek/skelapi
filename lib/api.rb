@@ -12,6 +12,8 @@ require 'api/api_helper'
 module Api
   extend self
 
+  class ApiError < StandardError; end
+
   attr_accessor :root_path,
                 :lib_path,
                 :env,
