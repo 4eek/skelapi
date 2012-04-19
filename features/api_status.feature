@@ -7,7 +7,7 @@ Feature: API Status
     Then the reponse should be OK
 
   Scenario: Status check with missing API key
-    When the client requests POST /status
+    When the client requests POST /api/v0.0.1/status
     Then the reponse should be BAD REQUEST
     Then the response body should be:
       """
@@ -17,7 +17,7 @@ Feature: API Status
     Given the following POST params
       |_apikey     |method     |
       |i_am_wrong  |environment|
-    When the client requests POST /status
+    When the client requests POST /api/v0.0.1/status
     Then the response body should be:
       """
       [:error, "Unauthorized"]
@@ -27,7 +27,7 @@ Feature: API Status
     Given the following POST params
       |_apikey     |method     |
       |i_am_awesome|environment|
-    When the client requests POST /status
+    When the client requests POST /api/v0.0.1/status
     Then the response should be JSON:
       """
       {"env": "test", "method": "environment"}

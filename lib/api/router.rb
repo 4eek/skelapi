@@ -10,13 +10,13 @@ module Api
     Dir.foreach(Api.lib_path.join('controllers/post').to_s) do |f|
       next if f =~ /^\./
       klass = f.gsub(/_controller.rb$/, '').split('_').map{ |e| e.capitalize }.join
-      post Kernel.const_get("Api").const_get(klass).const_get("ENDPOINT"), Kernel.const_get("Api").const_get("#{klass}Controller".to_sym)
+      post "/api/v#{VERSION}#{Kernel.const_get("Api").const_get(klass).const_get("ENDPOINT")}", Kernel.const_get("Api").const_get("#{klass}Controller".to_sym)
     end
     # GET
     Dir.foreach(Api.lib_path.join('controllers/get').to_s) do |f|
       next if f =~ /^\./
       klass = f.gsub(/_controller.rb$/, '').split('_').map{ |e| e.capitalize }.join
-      get Kernel.const_get("Api").const_get(klass).const_get("ENDPOINT"), Kernel.const_get("Api").const_get("#{klass}Controller".to_sym)
+      get "/api/v#{VERSION}#{Kernel.const_get("Api").const_get(klass).const_get("ENDPOINT")}", Kernel.const_get("Api").const_get("#{klass}Controller".to_sym)
     end
 
     # If you need finer control you may want to comment out the above and rather set the endpoints manually here.
