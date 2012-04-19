@@ -10,7 +10,7 @@ module Api
     end
 
     def method_router
-      send("#{params['method']}_method".to_sym, params) rescue raise "Method #{params['method']} not found."
+      send("#{params['method']}_method".to_sym, params) rescue raise "Method #{params['method']||'EMPTY_METHOD'} not found."
     end
 
     def environment_method(params)
