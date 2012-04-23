@@ -1,2 +1,4 @@
 .yardoc/
 config/*.yml
+
+tmp/pids/server.pid

@@ -7,7 +7,7 @@ LOG_PATH    = File.expand_path('log', ROOT_PATH)
 
 CONFIG_FILE = "#{CONFIG_PATH}/application.rb"
 LOG_FILE    = "#{LOG_PATH}/server.log"
-PID_FILE    = "#{ROOT_PATH}/tmp/server.pid"
+PID_FILE    = "#{ROOT_PATH}/tmp/pids/server.pid"
 
 $: << ROOT_PATH << LIB_PATH
 

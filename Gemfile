@@ -8,6 +8,9 @@ gem 'yajl-ruby'
 gem 'thor'
 
 group :development, :test do
+  gem 'capistrano'
+  gem 'capistrano-ext'
+  gem 'pry'
   gem 'ruby-debug19'
   gem 'cucumber'
   gem 'rspec'
