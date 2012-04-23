@@ -55,6 +55,7 @@ GEM
       capistrano (>= 1.0.0)
     childprocess (0.3.1)
       ffi (~> 1.0.6)
+    cobravsmongoose (0.0.2)
     coderay (1.0.6)
     columnize (0.3.6)
     cookiejar (0.3.0)
@@ -145,6 +146,7 @@ DEPENDENCIES
   capistrano
   capistrano-ext
   childprocess
+  cobravsmongoose
   cucumber
   em-http-request!
   em-mongo!

@@ -6,6 +6,7 @@ gem 'em-http-request', :git => 'https://github.com/igrigorik/em-http-request.git
 gem 'goliath',         :git => 'https://github.com/postrank-labs/goliath.git'
 gem 'yajl-ruby'
 gem 'thor'
+gem 'cobravsmongoose'
 
 group :development, :test do
   gem 'capistrano'
