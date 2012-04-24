@@ -105,7 +105,9 @@ namespace :deploy do
 
   desc "Zero-downtime restart of Goliath"
   task :restart, :except => { :no_release => true }, :on_error => :continue do
-    run "kill -s USR2 `cat #{current_path}/tmp/pids/server.pid`"
+    # run "kill -s USR2 `cat #{current_path}/tmp/pids/server.pid`"
+    run "kill -s QUIT `cat #{current_path}/tmp/pids/server.pid`"
+    run "cd #{current_path} ; bundle exec bin/server -e staging -d"
   end
 
   desc "Start goliath"
