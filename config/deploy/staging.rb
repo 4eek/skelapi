@@ -1,3 +1,5 @@
+NUM_SERVERS = 10
+
 set :scm,             :git
 set :repository,      "git@github.com:madebythem/imbapi.git"
 set :branch,          "master"
@@ -5,7 +7,6 @@ set :migrate_target,  :current
 set :ssh_options,     { :forward_agent => true }
 set :rack_env,        "staging"
 set :deploy_to,       "/data/apps/imbapi"
-set :normalize_asset_timestamps, false
 
 set :rvm_ruby_string, '1.9.3-p0@imbapi'
 set :rvm_type,        :system  # Use system-wide RVM
@@ -14,10 +15,9 @@ set :user,            "ubuntu"
 set :group,           "ubuntu"
 set :use_sudo,        false
 
-role :web,    "ec2-67-202-42-216.compute-1.amazonaws.com"
-role :app,    "ec2-67-202-42-216.compute-1.amazonaws.com"
-role :web,    "ec2-23-20-95-61.compute-1.amazonaws.com"
-role :app,    "ec2-23-20-95-61.compute-1.amazonaws.com"
+role :app,    "ec2-177-71-136-57.sa-east-1.compute.amazonaws.com"
+# role :app,    "ec2-67-202-42-216.compute-1.amazonaws.com"
+# role :app,    "ec2-23-20-95-61.compute-1.amazonaws.com"
 
 set(:latest_release)  { fetch(:current_path) }
 set(:release_path)    { fetch(:current_path) }
@@ -30,14 +30,15 @@ set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEA
 default_environment["RACK_ENV"] = 'staging'
 
 # Use our ruby-1.9.3-p0@imbapi gemset
-default_environment["PATH"]         = "/usr/local/rvm/gems/ruby-1.9.3-p0@imbapi/bin:/usr/local/rvm/gems/ruby-1.9.3-p0@global/bin:/usr/local/rvm/rubies/ruby-1.9.3-p0/bin:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
-default_environment["GEM_HOME"]     = "/usr/local/rvm/gems/ruby-1.9.3-p0@imbapi"
-default_environment["GEM_PATH"]     = "/usr/local/rvm/gems/ruby-1.9.3-p0@imbapi:/usr/local/rvm/gems/ruby-1.9.3-p0@global"
+# NOTE: You can get this by running 'rvm info' on the destination server
+default_environment["PATH"]         = "/usr/share/ruby-rvm/gems/ruby-1.9.3-p0/bin:/usr/share/ruby-rvm/gems/ruby-1.9.3-p0@global/bin:/usr/share/ruby-rvm/rubies/ruby-1.9.3-p0/bin:/usr/share/ruby-rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games"
+default_environment["GEM_HOME"]     = "/usr/share/ruby-rvm/gems/ruby-1.9.3-p0"
+default_environment["GEM_PATH"]     = "/usr/share/ruby-rvm/gems/ruby-1.9.3-p0:/usr/share/ruby-rvm/gems/ruby-1.9.3-p0@global"
 default_environment["RUBY_VERSION"] = "ruby-1.9.3-p0"
 
 default_run_options[:shell] = 'bash'
 
-ssh_options[:keys] = %w(~/.ssh/ec2-imb-eu-west-1.pem ~/.ssh/ec2-imb-us-east-1.pem)
+ssh_options[:keys] = %w(~/.ssh/ec2-imb-sa-east-1.pem ~/.ssh/ec2-imb-eu-west-1.pem ~/.ssh/ec2-imb-us-east-1.pem)
 
 namespace :deploy do
   desc "Deploy the application"
@@ -96,26 +97,25 @@ namespace :deploy do
       ln -sf #{shared_path}/config/settings.yml #{latest_release}/config/settings.yml
     CMD
 
-    if fetch(:normalize_asset_timestamps, true)
-      stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
-      asset_paths = fetch(:public_children, %w(images stylesheets javascripts)).map { |p| "#{latest_release}/public/#{p}" }.join(" ")
-      run "find #{asset_paths} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }
+  end
+
+  desc "Restart"
+  task :restart, :except => { :no_release => true }, :on_error => :continue do
+    deploy.stop
+    deploy.start
+  end
+
+  desc "Start"
+  task :start, :except => { :no_release => true } do
+    NUM_SERVERS.times do |i|
+      run "cd #{current_path} ; bundle exec bin/server -e staging -p 900#{i} -P #{shared_path}/pids/server_900#{i}.pid -d"
     end
   end
 
-  desc "Zero-downtime restart of Goliath"
-  task :restart, :except => { :no_release => true }, :on_error => :continue do
-    run "kill -s USR2 `cat #{current_path}/tmp/pids/server.pid`"
-  end
-
-  desc "Start goliath"
-  task :start, :except => { :no_release => true } do
-    run "cd #{current_path} ; bundle exec bin/server -e staging -d"
-  end
-
-  desc "Stop goliath"
-  task :stop, :except => { :no_release => true } do
-    run "kill -s QUIT `cat #{current_path}/tmp/pids/server.pid`"
+  desc "Stop"
+  task :stop, :except => { :no_release => true }, :on_error => :continue do
+    logger.info "for f in #{shared_path}/pids/*.pid; do echo \"Processing $f file..\"; kill -s QUIT `cat $f`; done"
+    run "for f in #{shared_path}/pids/*.pid; do echo \"Processing $f file..\"; kill -s QUIT `cat $f`; done"
   end
 
   namespace :rollback do
