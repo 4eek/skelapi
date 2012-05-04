@@ -18,7 +18,7 @@ end
 #------------------------------------------------------------------------------
 
 # Settings
-config['settings'] = YAML.load_file(Api.root_path.join('config/settings.yml'))[config[:env]]
+config[:settings] = YAML.load_file(Api.root_path.join('config/settings.yml'))[config[:env]]
 
 # EventMachine configuration
 EM.error_handler do |e|
