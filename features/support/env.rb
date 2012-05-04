@@ -1,6 +1,7 @@
 require 'childprocess' 
 require 'timeout' 
 require 'httparty'
+require "json_spec/cucumber"
 
 server = ChildProcess.build("bin/server", "--port", "9999", "-e", "test") 
 server.start

@@ -15,6 +15,7 @@ group :development, :test do
   gem 'ruby-debug19'
   gem 'cucumber'
   gem 'rspec'
+  gem 'json_spec'
   gem 'httparty'
   gem 'childprocess'
   gem 'mongo'

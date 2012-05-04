@@ -12,6 +12,10 @@ When /^the client requests POST (.*)$/ do |path|
   @last_response = APIClient.post(path, :query => @params)
 end
 
+def last_json
+  @last_response.body
+end
+
 Then /^the reponse should be OK$/ do
   @last_response.code.should == 200
 end
@@ -28,7 +32,11 @@ Then /^the response body should be:$/ do |string|
   @last_response.body.should == string
 end
 
-Then /^the response should be JSON:$/ do |json| 
+Then /^the response should be valid JSON$/ do
+    JSON.parse(@last_response.body)
+end
+
+Then /^the response should be exactly JSON:$/ do |json|
   JSON.parse(@last_response.body).should == JSON.parse(json)
 end
 

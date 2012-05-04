@@ -28,7 +28,10 @@ Feature: API Status
       |_apikey     |method     |
       |i_am_awesome|environment|
     When the client requests POST /api/v0.0.1/status
-    Then the response should be JSON:
+    And the JSON response at "env" should be "test"
+    And the JSON response at "method" should be "environment"
+    And the JSON response at "method" should be a string
+    Then the response should be exactly JSON:
       """
       {"env": "test", "method": "environment"}
       """
