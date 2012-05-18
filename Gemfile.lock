@@ -17,23 +17,6 @@ GIT
       eventmachine (>= 1.0.0.beta.4)
       http_parser.rb (>= 0.5.3)
 
-GIT
-  remote: https://github.com/postrank-labs/goliath.git
-  revision: 11c996b062053821a027d59513b5644ed0ce1e1f
-  specs:
-    goliath (0.9.4)
-      async-rack
-      em-synchrony (>= 1.0.0)
-      em-websocket
-      eventmachine (>= 1.0.0.beta.3)
-      http_parser.rb (~> 0.5.3)
-      http_router (~> 0.9.0)
-      log4r
-      multi_json
-      rack (>= 1.2.2)
-      rack-contrib
-      rack-respond_to
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -70,13 +53,21 @@ GEM
       eventmachine (>= 1.0.0.beta.4)
     em-synchrony (1.0.1)
       eventmachine (>= 1.0.0.beta.1)
-    em-websocket (0.3.6)
-      addressable (>= 2.1.1)
-      eventmachine (>= 0.12.9)
     eventmachine (1.0.0.beta.4)
     ffi (1.0.11)
     gherkin (2.9.3)
       json (>= 1.4.6)
+    goliath (0.9.4)
+      async-rack
+      em-synchrony (>= 1.0.0)
+      eventmachine (>= 1.0.0.beta.3)
+      http_parser.rb
+      http_router (~> 0.9.0)
+      log4r
+      multi_json
+      rack (>= 1.2.2)
+      rack-contrib
+      rack-respond_to
     highline (1.6.11)
     http_parser.rb (0.5.3)
     http_router (0.9.7)
@@ -153,7 +144,7 @@ DEPENDENCIES
   cucumber
   em-http-request!
   em-mongo!
-  goliath!
+  goliath (= 0.9.4)
   httparty
   json_spec
   mongo

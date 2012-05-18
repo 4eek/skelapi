@@ -30,7 +30,7 @@ db_settings = YAML.load_file(Api.root_path.join('config/database.yml'))[config[:
 config['db'] = EventMachine::Synchrony::ConnectionPool.new(:size => 20) do
   conn = EM::Mongo::Connection.new(db_settings['host'], db_settings['port'], 1, {:reconnect_in => 1})
   database = conn.db(db_settings['database'])
-  database.authenticate(db_settings['username'], db_settings['password'])
+  database.authenticate(db_settings['username'], db_settings['password']) if db_settings['username']
   database
 end
 
