@@ -8,7 +8,6 @@ require 'yajl/json_gem'
 require 'grape'
 require 'cobravsmongoose'
 
-require 'api/version'
 require 'api/api_helper'
 
 module Api
