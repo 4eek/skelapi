@@ -1,24 +1,33 @@
 # Environment configuration
+envo = nil
+
 environment :development do
-  config[:env] = 'development'
+  envo = "development"
 end
 
 environment :staging do
-  config[:env] = 'staging'
+  envo = "staging"
 end
 
 environment :production do
-  config[:env] = 'production'
+  envo = "production"
 end
 
 environment :test do
-  config[:env] = 'test'
+  envo = "test"
 end
 
 #------------------------------------------------------------------------------
 
+# Versions
+config['version'] = "v1"
+
+# Paths
+root_path = File.expand_path('../../..', __FILE__)
+config['root_path'] = root_path
+
 # Settings
-config[:settings] = YAML.load_file(Api.root_path.join('config/settings.yml'))[config[:env]]
+config['settings'] = YAML.load_file("#{root_path}/config/settings.yml")[envo]
 
 # EventMachine configuration
 EM.error_handler do |e|
@@ -26,12 +35,10 @@ EM.error_handler do |e|
 end
 
 # Database
-db_settings = YAML.load_file(Api.root_path.join('config/database.yml'))[config[:env]]
+db_settings = YAML.load_file("#{root_path}/config/database.yml")[envo]
 config['db'] = EventMachine::Synchrony::ConnectionPool.new(:size => 20) do
   conn = EM::Mongo::Connection.new(db_settings['host'], db_settings['port'], 1, {:reconnect_in => 1})
   database = conn.db(db_settings['database'])
   database.authenticate(db_settings['username'], db_settings['password']) if db_settings['username']
   database
 end
-
-Api.configure(self)
