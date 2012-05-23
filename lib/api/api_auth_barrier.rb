@@ -125,7 +125,7 @@ module Api
 
     def validate_apikey!
       if apikey.to_s.empty?
-        raise MissingApikeyError
+        raise MissingApikeyError, "Missing API key."
       end
     end
 

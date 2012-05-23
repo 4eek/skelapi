@@ -5,6 +5,7 @@ require 'em-http'
 require 'em-synchrony/em-http'
 require 'em-synchrony/em-mongo'
 require 'yajl/json_gem'
+require 'grape'
 require 'cobravsmongoose'
 
 require 'api/version'

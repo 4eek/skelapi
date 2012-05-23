@@ -76,6 +76,13 @@ GEM
     ffi (1.0.11)
     gherkin (2.9.3)
       json (>= 1.4.6)
+    grape (0.2.0)
+      hashie (~> 1.2)
+      multi_json
+      multi_xml
+      rack
+      rack-mount
+    hashie (1.2.0)
     highline (1.6.11)
     http_parser.rb (0.5.3)
     httparty (0.8.2)
@@ -108,6 +115,8 @@ GEM
     rack-accept-media-types (0.9)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
+    rack-mount (0.8.3)
+      rack (>= 1.0.0)
     rack-respond_to (0.9.8)
       rack-accept-media-types (>= 0.6)
     redcarpet (2.1.1)
@@ -148,6 +157,7 @@ DEPENDENCIES
   em-http-request!
   em-mongo!
   goliath!
+  grape
   httparty
   json_spec
   mongo
