@@ -7,18 +7,12 @@ Feature: API Status
     Then the reponse should be OK
 
   Scenario: Status check with missing API key
-    When the client requests GET /v1/status.json
+    When the client requests GET /v1/status
     Then the reponse should be BAD REQUEST
-    Then the response body should be:
-      """
-      [:error, "[\"_apikey\"] identifier missing"]
-      """
+    Then the JSON response at "error" should be "[\"_apikey\"] identifier missing"
   Scenario: Status check with invalid API key
-    When the client requests GET /v1/status.json?_apikey=i_am_wrong
-    Then the response body should be:
-      """
-      [:error, "Unauthorized"]
-      """
+    When the client requests GET /v1/status?_apikey=i_am_wrong
+    Then the JSON response at "error" should be "Unauthorized"
     Then the reponse should be UNAUTHORIZED
   Scenario: Status check with valid API key
     When the client requests GET /v1/status?_apikey=i_am_awesome
