@@ -87,12 +87,8 @@ namespace :deploy do
     # mkdir -p is making sure that the directories are there for some SCM's that don't
     # save empty folders
     run <<-CMD
-      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids &&
-      mkdir -p #{latest_release}/public &&
-      mkdir -p #{latest_release}/tmp &&
+      rm -rf #{latest_release}/log &&
       ln -s #{shared_path}/log #{latest_release}/log &&
-      ln -s #{shared_path}/system #{latest_release}/public/system &&
-      ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml &&
       ln -sf #{shared_path}/config/settings.yml #{latest_release}/config/settings.yml
     CMD
@@ -107,15 +103,12 @@ namespace :deploy do
 
   desc "Start"
   task :start, :except => { :no_release => true } do
-    NUM_SERVERS.times do |i|
-      run "cd #{current_path} ; bundle exec bin/server -e staging -p 900#{i} -P #{shared_path}/pids/server_900#{i}.pid -d"
-    end
+    # Use god for this
   end
 
   desc "Stop"
   task :stop, :except => { :no_release => true }, :on_error => :continue do
-    logger.info "for f in #{shared_path}/pids/*.pid; do echo \"Processing $f file..\"; kill -s QUIT `cat $f`; done"
-    run "for f in #{shared_path}/pids/*.pid; do echo \"Processing $f file..\"; kill -s QUIT `cat $f`; done"
+    # Use god for this
   end
 
   namespace :rollback do
