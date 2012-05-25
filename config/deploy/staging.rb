@@ -1,4 +1,5 @@
 NUM_SERVERS = 10
+GROUPS = %w[version status] # TODO: we should build this dynamically.
 
 set :scm,             :git
 set :repository,      "git@github.com:madebythem/imbapi.git"
@@ -97,18 +98,23 @@ namespace :deploy do
 
   desc "Restart"
   task :restart, :except => { :no_release => true }, :on_error => :continue do
-    deploy.stop
-    deploy.start
+    GROUPS.each do |group|
+      run "cd #{current_path}; bundle exec god restart #{group}"
+    end
   end
 
   desc "Start"
   task :start, :except => { :no_release => true } do
-    # Use god for this
+    GROUPS.each do |group|
+      run "cd #{current_path}; bundle exec god start #{group}"
+    end
   end
 
   desc "Stop"
   task :stop, :except => { :no_release => true }, :on_error => :continue do
-    # Use god for this
+    GROUPS.each do |group|
+      run "cd #{current_path}; bundle exec god stop #{group}"
+    end
   end
 
   namespace :rollback do
@@ -135,3 +141,22 @@ def run_rake(cmd)
   run "cd #{current_path}; #{rake} #{cmd}"
 end
 
+namespace :god do
+
+  desc "Start"
+  task :start do
+    run "cd #{current_path}; bundle exec god -c config/god/god.config"
+  end
+
+  desc "Terminate"
+  task :terminate do
+    run "cd #{current_path}; bundle exec god terminate"
+  end
+
+  desc "Restart"
+  task :restart do
+    god.terminate
+    got.start
+  end
+
+end
